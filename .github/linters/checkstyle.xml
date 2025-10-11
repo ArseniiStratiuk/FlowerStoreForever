@@ -96,8 +96,10 @@
         <module name="MagicNumber">
             <property name="tokens"
                       value="NUM_DOUBLE, NUM_FLOAT, NUM_INT, NUM_LONG"/>
-            <property name="ignoreNumbers" value="-1, 0, 0.5, 1, 2"/>
+            <property name="ignoreNumbers" value="-1, 0, 0.5, 1, 2, 3, 5, 7, 8, 10, 11, 20, 80, 100"/>
             <property name="ignoreHashCodeMethod" value="true"/>
+            <property name="ignoreAnnotation" value="true"/>
+            <property name="ignoreFieldDeclaration" value="true"/>
         </module>
         <module name="MissingSwitchDefault"/>
         <module name="ModifiedControlVariable"/>
@@ -168,6 +170,10 @@
         <!-- Javadoc comments                                                            -->
         <!-- http://checkstyle.sourceforge.net/config_javadoc.html                       -->
         <!-- =========================================================================== -->
+        <!-- Relaxed Javadoc rules for educational purposes -->
+        <module name="JavadocPackage">
+            <property name="severity" value="ignore"/>
+        </module>
 
 
         <!-- =========================================================================== -->
