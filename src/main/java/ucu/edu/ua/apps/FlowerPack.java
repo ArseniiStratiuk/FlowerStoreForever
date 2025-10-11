@@ -5,10 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-/**
- * Represents a pack of identical flowers.
- * Contains a flower and the quantity in the pack.
- */
+/** Represents a pack of identical flowers. Contains a flower and the quantity in the pack. */
 @Getter
 @Setter
 @AllArgsConstructor

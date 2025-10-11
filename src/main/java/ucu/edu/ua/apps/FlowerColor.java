@@ -1,9 +1,6 @@
 package ucu.edu.ua.apps;
 
-/**
- * Represents the color of a flower.
- * Each color has a hexadecimal representation.
- */
+/** Represents the color of a flower. Each color has a hexadecimal representation. */
 public enum FlowerColor {
   /** Red color. */
   RED("#FF0000"),
