@@ -13,7 +13,7 @@ public final class Main {
    * @param args command line arguments
    */
   public static void main(final String[] args) {
-    // CHECKSTYLE:OFF
+    // CHECKSTYLE:OFF: MagicNumber - Demo code with literal values
     FlowerColor flowerColor = FlowerColor.RED;
     System.out.println(flowerColor); // "#FF0000"
     Flower flower = new Flower(100, FlowerColor.RED, 100, FlowerType.ROSE);
@@ -24,6 +24,6 @@ public final class Main {
     flower.setPrice(80);
     System.out.println(flowerPack1.getPrice());
     System.out.println(flowerPack2.getPrice());
-    // CHECKSTYLE:ON
+    // CHECKSTYLE:ON: MagicNumber
   }
 }

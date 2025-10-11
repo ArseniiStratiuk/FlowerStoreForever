@@ -6,25 +6,35 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class StoreTest {
+/** Test class for Store. */
+public final class StoreTest {
+  private static final int ROSE_PRICE = 10;
+  private static final int CHAMOMILE_PRICE = 5;
+  private static final int TULIP_PRICE = 8;
+  private static final int PACK_QUANTITY = 10;
+  private static final int MIN_PRICE_FILTER = 7;
+  private static final int MAX_PRICE_FILTER = 11;
+
+  /** The store instance being tested. */
   private Store store;
 
+  /** Initializes the test environment before each test. */
   @BeforeEach
   public void init() {
     store = new Store();
     Flower rose = new Rose();
-    rose.setPrice(10);
+    rose.setPrice(ROSE_PRICE);
     rose.setColor(FlowerColor.RED);
     Flower chamomile = new Chamomile();
-    chamomile.setPrice(5);
+    chamomile.setPrice(CHAMOMILE_PRICE);
     chamomile.setColor(FlowerColor.WHITE);
     Flower tulip = new Tulip();
-    tulip.setPrice(8);
+    tulip.setPrice(TULIP_PRICE);
     tulip.setColor(FlowerColor.RED);
 
-    FlowerPack rosePack = new FlowerPack(rose, 10);
-    FlowerPack chamomilePack = new FlowerPack(chamomile, 10);
-    FlowerPack tulipPack = new FlowerPack(tulip, 10);
+    FlowerPack rosePack = new FlowerPack(rose, PACK_QUANTITY);
+    FlowerPack chamomilePack = new FlowerPack(chamomile, PACK_QUANTITY);
+    FlowerPack tulipPack = new FlowerPack(tulip, PACK_QUANTITY);
 
     FlowerBucket bucket = new FlowerBucket();
     bucket.addFlowerPack(rosePack);
@@ -34,6 +44,7 @@ public class StoreTest {
     store.add(bucket);
   }
 
+  /** Tests searching flowers by color. */
   @Test
   public void testSearchByColor() {
     SearchFilter filter = new ColorFilter(FlowerColor.RED);
@@ -44,16 +55,19 @@ public class StoreTest {
     }
   }
 
+  /** Tests searching flowers by price range. */
   @Test
   public void testSearchByPrice() {
-    SearchFilter filter = new PriceFilter(7, 11);
+    SearchFilter filter = new PriceFilter(MIN_PRICE_FILTER, MAX_PRICE_FILTER);
     List<Flower> found = store.search(filter);
     assertEquals(2, found.size());
     for (Flower flower : found) {
-      assert flower.getPrice() >= 7 && flower.getPrice() <= 11;
+      assert flower.getPrice() >= MIN_PRICE_FILTER
+          && flower.getPrice() <= MAX_PRICE_FILTER;
     }
   }
 
+  /** Tests searching flowers by flower type. */
   @Test
   public void testSearchByFlowerType() {
     SearchFilter filter = new FlowerTypeFilter(FlowerType.ROSE);
