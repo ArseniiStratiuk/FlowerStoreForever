@@ -12,14 +12,27 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/api/flowers")
-public class FlowerController {
+public final class FlowerController {
 
+    /**
+     * Provides catalog data used by the controller.
+     */
     private final FlowerService flowerService;
 
-    public FlowerController(FlowerService flowerService) {
-        this.flowerService = flowerService;
+    /**
+     * Creates the controller with its dependencies injected by Spring.
+     *
+     * @param flowerServiceBean service exposing read-only flower data
+     */
+    public FlowerController(final FlowerService flowerServiceBean) {
+        this.flowerService = flowerServiceBean;
     }
 
+    /**
+     * Returns the list of flowers exposed by the catalogue service.
+     *
+     * @return immutable list of sample flowers
+     */
     @GetMapping
     public List<Flower> findAll() {
         return flowerService.findAll();

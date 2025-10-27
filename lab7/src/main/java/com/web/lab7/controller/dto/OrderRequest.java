@@ -4,6 +4,13 @@ import java.util.List;
 
 /**
  * Request payload for creating demo orders.
+ *
+ * @param items requested flower identifiers
+ * @param payment chosen payment strategy
+ * @param delivery chosen delivery strategy
  */
-public record OrderRequest(List<String> items, String payment, String delivery) {
+public record OrderRequest(
+        List<String> items,
+        String payment,
+        String delivery) {
 }

@@ -11,8 +11,13 @@ import org.springframework.stereotype.Service;
  * Supplies delivery strategies for the demo application.
  */
 @Service
-public class DeliveryService {
+public final class DeliveryService {
 
+    /**
+     * Creates the sample delivery strategies used by the application.
+     *
+     * @return immutable list of strategies
+     */
     public List<Delivery> getAvailableStrategies() {
         return List.of(
                 new PostDeliveryStrategy("Kyiv, Main Street 1"),
@@ -20,13 +25,26 @@ public class DeliveryService {
         );
     }
 
-    public Delivery resolve(String name) {
+    /**
+     * Resolves a delivery strategy by its identifier.
+     *
+     * @param name case-insensitive delivery identifier
+     * @return matching delivery strategy
+     */
+    public Delivery resolve(final String name) {
         return getAvailableStrategies().stream()
                 .filter(delivery -> delivery.getName().equalsIgnoreCase(name))
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Unknown delivery method: " + name));
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "Unknown delivery method: " + name
+                ));
     }
 
+    /**
+     * Lists the identifiers of configured delivery strategies.
+     *
+     * @return delivery method names
+     */
     public List<String> getNames() {
         return getAvailableStrategies().stream()
                 .map(delivery -> delivery.getName().toLowerCase(Locale.ROOT))

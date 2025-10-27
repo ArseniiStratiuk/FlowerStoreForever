@@ -6,19 +6,35 @@ import com.web.lab7.model.item.ItemDecorator;
 /**
  * Adds paper wrapping to any item.
  */
-public class PaperDecorator extends ItemDecorator {
+public final class PaperDecorator extends ItemDecorator {
 
-    public PaperDecorator(Item item) {
+    /**
+     * Additional cost applied for paper wrapping.
+     */
+    private static final double PAPER_WRAP_PRICE = 13;
+
+    /**
+     * Creates a decorator that wraps the supplied item in paper.
+     *
+     * @param item item to be wrapped
+     */
+    public PaperDecorator(final Item item) {
         super(item, "Paper wrap");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double price() {
-        return 13 + item.price();
+        return PAPER_WRAP_PRICE + getWrappedItem().price();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getDescription() {
-        return item.getDescription() + ", wrapped in paper";
+        return getWrappedItem().getDescription() + ", wrapped in paper";
     }
 }

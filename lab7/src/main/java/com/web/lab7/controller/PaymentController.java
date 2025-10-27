@@ -13,23 +13,48 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/api/payments")
-public class PaymentController {
+public final class PaymentController {
 
+    /**
+     * Provides access to available payment strategies.
+     */
     private final PaymentService paymentService;
 
-    public PaymentController(PaymentService paymentService) {
-        this.paymentService = paymentService;
+    /**
+     * Creates the controller with its required dependencies.
+     *
+     * @param paymentServiceBean service exposing payment strategies
+     */
+    public PaymentController(final PaymentService paymentServiceBean) {
+        this.paymentService = paymentServiceBean;
     }
 
+    /**
+     * Lists the names of configured payment strategies.
+     *
+     * @return strategy identifiers
+     */
     @GetMapping
     public List<String> paymentMethods() {
         return paymentService.getNames();
     }
 
+    /**
+     * Simulates a payment attempt with the provided method and amount.
+     *
+     * @param method payment method identifier, defaults to credit card
+     * @param amount transaction amount in arbitrary currency units
+     * @return execution result including method, amount, and success flag
+     */
     @GetMapping("/simulate")
-    public Map<String, Object> simulatePayment(@RequestParam(defaultValue = "credit-card") String method,
-                                               @RequestParam(defaultValue = "100") double amount) {
-        boolean result = paymentService.resolve(method).pay(amount);
-        return Map.of("method", method, "amount", amount, "success", result);
+    public Map<String, Object> simulatePayment(
+            @RequestParam(defaultValue = "credit-card") final String method,
+            @RequestParam(defaultValue = "100") final double amount) {
+        final boolean result = paymentService.resolve(method).pay(amount);
+        return Map.of(
+                "method", method,
+                "amount", amount,
+                "success", result
+        );
     }
 }

@@ -5,12 +5,20 @@ import com.web.lab7.model.item.Item;
 /**
  * Express delivery using DHL.
  */
-public class DHLDeliveryStrategy implements Delivery {
+public final class DHLDeliveryStrategy implements Delivery {
 
+    /**
+     * Warehouse location used to describe the delivery.
+     */
     private final String warehouse;
 
-    public DHLDeliveryStrategy(String warehouse) {
-        this.warehouse = warehouse;
+    /**
+     * Creates the strategy with a specific warehouse location.
+     *
+     * @param warehouseLocation warehouse description used in messages
+     */
+    public DHLDeliveryStrategy(final String warehouseLocation) {
+        this.warehouse = warehouseLocation;
     }
 
     @Override
@@ -19,10 +27,17 @@ public class DHLDeliveryStrategy implements Delivery {
     }
 
     @Override
-    public String deliver(Item item) {
-        return "Delivering " + item.getDescription() + " via DHL from " + warehouse;
+    public String deliver(final Item item) {
+        return String.format(
+                "Delivering %s via DHL from %s",
+                item.getDescription(),
+                warehouse
+        );
     }
 
+    /**
+     * @return warehouse location used by the strategy
+     */
     public String getWarehouse() {
         return warehouse;
     }
