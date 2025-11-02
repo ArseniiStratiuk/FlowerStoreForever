@@ -5,6 +5,8 @@ import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.containers.wait.strategy.Wait;
+import java.time.Duration;
 
 /**
  * Shared PostgreSQL Testcontainers setup for integration tests.
@@ -15,9 +17,15 @@ public abstract class PostgresContainerTest {
     @Container
     @SuppressWarnings("resource")
     private static final PostgreSQLContainer<?> POSTGRES = new PostgreSQLContainer<>("postgres:16-alpine")
-            .withDatabaseName("flowerstore")
-            .withUsername("flower")
-            .withPassword("flower");
+        .withDatabaseName("flowerstore")
+        .withUsername("flower")
+        .withPassword("flower")
+        .waitingFor(Wait.forListeningPort())
+        .withStartupTimeout(Duration.ofSeconds(60));
+
+    static {
+        POSTGRES.start();
+    }
 
     @DynamicPropertySource
     static void configureDatasource(final DynamicPropertyRegistry registry) {

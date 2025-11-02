@@ -1,8 +1,8 @@
 package com.web.lab7.controller;
 
+import com.web.lab7.controller.dto.PaymentSimulationResponse;
 import com.web.lab7.service.PaymentService;
 import java.util.List;
-import java.util.Map;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
  * Simple API to inspect and test payment strategies.
  */
 @RestController
-@RequestMapping("/api/payments")
+@RequestMapping("/api/v1/payment")
 public final class PaymentController {
 
     /**
@@ -47,14 +47,10 @@ public final class PaymentController {
      * @return execution result including method, amount, and success flag
      */
     @GetMapping("/simulate")
-    public Map<String, Object> simulatePayment(
+    public PaymentSimulationResponse simulatePayment(
             @RequestParam(defaultValue = "credit-card") final String method,
             @RequestParam(defaultValue = "100") final double amount) {
         final boolean result = paymentService.resolve(method).pay(amount);
-        return Map.of(
-                "method", method,
-                "amount", amount,
-                "success", result
-        );
+        return new PaymentSimulationResponse(method, amount, result);
     }
 }
