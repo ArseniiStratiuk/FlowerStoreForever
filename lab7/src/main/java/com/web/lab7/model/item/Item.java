@@ -1,13 +1,18 @@
 package com.web.lab7.model.item;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.MappedSuperclass;
+
 /**
  * Base abstraction for purchasable items within the flower store.
  */
+@MappedSuperclass
 public abstract class Item {
 
     /**
      * Human-readable description shown to clients.
      */
+    @Column(name = "description", nullable = false)
     private String description;
 
     /**

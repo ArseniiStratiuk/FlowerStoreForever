@@ -1,30 +1,53 @@
 package com.web.lab7.model.flower;
 
 import com.web.lab7.model.item.Item;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 /**
  * Domain object describing a single flower.
  */
+@Entity
+@Table(name = "flowers")
 public class Flower extends Item {
+
+    /**
+     * Technical identifier managed by the database.
+     */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     /**
      * Sepal length in centimetres.
      */
+    @Column(name = "sepal_length", nullable = false)
     private double sepalLength;
 
     /**
      * Visual colour representation of the flower.
      */
+    @Enumerated(EnumType.STRING)
+    @Column(name = "color", nullable = false)
     private FlowerColor color;
 
     /**
      * Price of the individual flower.
      */
+    @Column(name = "price", nullable = false)
     private double price;
 
     /**
      * Specific flower type (rose, tulip, etc.).
      */
+    @Enumerated(EnumType.STRING)
+    @Column(name = "flower_type", nullable = false)
     private FlowerType type;
 
     /**
@@ -51,6 +74,13 @@ public class Flower extends Item {
         this.color = flowerColor;
         this.sepalLength = initialSepalLength;
         this.price = initialPrice;
+    }
+
+    /**
+     * @return identifier assigned by the database
+     */
+    public Long getId() {
+        return id;
     }
 
     /**

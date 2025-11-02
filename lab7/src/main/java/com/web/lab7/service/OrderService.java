@@ -63,12 +63,12 @@ public final class OrderService {
         if (requestedItems.isEmpty()) {
             order.addItem(defaultItem());
         } else {
-        requestedItems.stream()
-            .map(name -> FlowerType.valueOf(
-                name.toUpperCase(Locale.ROOT)
-            ))
-            .map(flowerService::createFlower)
-            .forEach(order::addItem);
+            requestedItems.stream()
+                    .map(name -> FlowerType.valueOf(
+                            name.toUpperCase(Locale.ROOT)
+                    ))
+                    .map(flowerService::requireByType)
+                    .forEach(order::addItem);
         }
 
         final Payment payment = resolvePayment(request.payment());
@@ -90,7 +90,7 @@ public final class OrderService {
      * @return default flower item
      */
     private Item defaultItem() {
-        return flowerService.createFlower(FlowerType.ROSE);
+        return flowerService.requireByType(FlowerType.ROSE);
     }
 
     /**

@@ -1,131 +1,72 @@
 package com.web.lab7.service;
 
-import com.web.lab7.model.flower.CactusFlower;
 import com.web.lab7.model.flower.Flower;
-import com.web.lab7.model.flower.FlowerColor;
 import com.web.lab7.model.flower.FlowerType;
-import com.web.lab7.model.flower.RomashkaFlower;
-import java.util.EnumMap;
+import com.web.lab7.repository.FlowerRepository;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.function.Supplier;
+import java.util.Optional;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Provides flower catalogue data for controllers and services.
+ * Provides flower catalogue data backed by the database.
  */
 @Service
-public final class FlowerService {
-
-        /**
-         * Default cactus sepal length used for catalogue entries.
-         */
-        private static final double CACTUS_SEPAL_LENGTH = 12;
-
-        /**
-         * Default cactus price used for catalogue entries.
-         */
-        private static final double CACTUS_PRICE = 30;
-
-        /**
-         * Default romashka sepal length used for catalogue entries.
-         */
-        private static final double ROMASHKA_SEPAL_LENGTH = 9;
-
-        /**
-         * Default romashka price used for catalogue entries.
-         */
-        private static final double ROMASHKA_PRICE = 12;
-
-        /**
-         * Default rose sepal length used for catalogue entries.
-         */
-        private static final double ROSE_SEPAL_LENGTH = 20;
-
-        /**
-         * Default rose price used for catalogue entries.
-         */
-        private static final double ROSE_PRICE = 40;
-
-        /**
-         * Default tulip sepal length used for catalogue entries.
-         */
-        private static final double TULIP_SEPAL_LENGTH = 18;
-
-        /**
-         * Default tulip price used for catalogue entries.
-         */
-        private static final double TULIP_PRICE = 22;
+@Transactional
+public class FlowerService {
 
     /**
-     * In-memory catalogue mapping flower types to suppliers.
+     * Repository exposing CRUD operations for flowers.
      */
-    private final Map<FlowerType, Supplier<Flower>> catalog =
-            new EnumMap<>(FlowerType.class);
+    private final FlowerRepository flowerRepository;
 
-    /**
-     * Populates the catalogue with sample flower suppliers.
-     */
-    public FlowerService() {
-        catalog.put(
-                FlowerType.CACTUS,
-                () -> new CactusFlower(
-                        CACTUS_SEPAL_LENGTH,
-                        FlowerColor.GREEN,
-                        CACTUS_PRICE
-                )
-        );
-        catalog.put(
-                FlowerType.ROMASHKA,
-                () -> new RomashkaFlower(
-                        ROMASHKA_SEPAL_LENGTH,
-                        FlowerColor.WHITE,
-                        ROMASHKA_PRICE
-                )
-        );
-        catalog.put(
-                FlowerType.ROSE,
-                () -> new Flower(
-                        FlowerType.ROSE,
-                        FlowerColor.RED,
-                        ROSE_SEPAL_LENGTH,
-                        ROSE_PRICE
-                )
-        );
-        catalog.put(
-                FlowerType.TULIP,
-                () -> new Flower(
-                        FlowerType.TULIP,
-                        FlowerColor.YELLOW,
-                        TULIP_SEPAL_LENGTH,
-                        TULIP_PRICE
-                )
-        );
+    public FlowerService(final FlowerRepository flowerRepository) {
+        this.flowerRepository = flowerRepository;
     }
 
     /**
-     * Provides all flowers defined in the catalogue.
+     * Returns every flower stored in the repository.
      *
-     * @return immutable list of catalogued flowers
+     * @return list of persisted flowers
      */
+    @Transactional(readOnly = true)
     public List<Flower> findAll() {
-        return catalog.values().stream().map(Supplier::get).toList();
+        return flowerRepository.findAll();
     }
 
     /**
-     * Creates a new flower instance for the requested type.
+     * Persists a flower entity.
      *
-     * @param type flower type to instantiate
-     * @return newly created flower
+     * @param flower entity to store
+     * @return saved flower instance
      */
-    public Flower createFlower(final FlowerType type) {
-        final Supplier<Flower> supplier = catalog.get(
-                Objects.requireNonNull(type, "type")
-        );
-        if (supplier == null) {
-            throw new IllegalArgumentException("Unknown flower type: " + type);
-        }
-        return supplier.get();
+    public Flower save(final Flower flower) {
+        return flowerRepository.save(flower);
+    }
+
+    /**
+     * Retrieves the first flower of the provided type if present.
+     *
+     * @param type flower species to search for
+     * @return optional containing the first matching flower
+     */
+    @Transactional(readOnly = true)
+    public Optional<Flower> findFirstByType(final FlowerType type) {
+        return flowerRepository.findFirstByType(type);
+    }
+
+    /**
+     * Retrieves the first flower of the provided type or fails when none is
+     *     stored yet.
+     *
+     * @param type flower species to search for
+     * @return matching flower entity
+     */
+    @Transactional(readOnly = true)
+    public Flower requireByType(final FlowerType type) {
+        return findFirstByType(type)
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "Flower type " + type + " is not present in the catalogue"
+                ));
     }
 }

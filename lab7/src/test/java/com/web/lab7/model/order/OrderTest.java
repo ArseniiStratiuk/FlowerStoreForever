@@ -4,8 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.web.lab7.model.flower.Flower;
+import com.web.lab7.model.flower.FlowerColor;
 import com.web.lab7.model.flower.FlowerType;
-import com.web.lab7.service.FlowerService;
 import com.web.lab7.strategy.delivery.PostDeliveryStrategy;
 import com.web.lab7.strategy.payment.PayPalPaymentStrategy;
 import java.util.List;
@@ -15,8 +15,7 @@ class OrderTest {
 
     @Test
     void processOrderChargesPaymentAndProducesDeliveryMessages() {
-        FlowerService flowerService = new FlowerService();
-        Flower flower = flowerService.createFlower(FlowerType.ROSE);
+        Flower flower = new Flower(FlowerType.ROSE, FlowerColor.RED, 20, 40);
 
         Order order = new Order();
         order.addItem(flower);

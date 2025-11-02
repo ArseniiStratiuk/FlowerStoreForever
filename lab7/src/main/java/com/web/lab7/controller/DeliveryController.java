@@ -61,8 +61,8 @@ public final class DeliveryController {
             @RequestParam(defaultValue = "post") final String method,
             @RequestParam(defaultValue = "ROSE") final String itemType) {
         final FlowerType type = FlowerType.valueOf(itemType.toUpperCase());
-        final String message = deliveryService.resolve(method)
-                .deliver(flowerService.createFlower(type));
+    final String message = deliveryService.resolve(method)
+        .deliver(flowerService.requireByType(type));
         return Map.of("method", method, "message", message);
     }
 }
