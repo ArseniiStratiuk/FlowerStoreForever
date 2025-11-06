@@ -14,9 +14,13 @@ import java.time.Duration;
 @Testcontainers
 public abstract class PostgresContainerTest {
 
+    /**
+     * Shared PostgreSQL container for all tests.
+     */
     @Container
     @SuppressWarnings("resource")
-    private static final PostgreSQLContainer<?> POSTGRES = new PostgreSQLContainer<>("postgres:16-alpine")
+    private static final PostgreSQLContainer<?> POSTGRES =
+            new PostgreSQLContainer<>("postgres:16-alpine")
         .withDatabaseName("flowerstore")
         .withUsername("flower")
         .withPassword("flower")
@@ -25,11 +29,13 @@ public abstract class PostgresContainerTest {
         .withStartupTimeout(Duration.ofSeconds(60));
 
     @DynamicPropertySource
-    static void configureDatasource(final DynamicPropertyRegistry registry) {
-        // Ensure the container is started as part of the DynamicPropertySource
-        // instead of during class initialization. Starting during static
-        // initialization can mask environment issues and cause a NoClassDefFound
-        // if the start throws an exception.
+    static void configureDatasource(
+            final DynamicPropertyRegistry registry) {
+        // Ensure the container is started as part of the
+        // DynamicPropertySource instead of during class initialization.
+        // Starting during static initialization can mask environment
+        // issues and cause a NoClassDefFound if the start throws an
+        // exception.
         if (!POSTGRES.isRunning()) {
             POSTGRES.start();
         }
