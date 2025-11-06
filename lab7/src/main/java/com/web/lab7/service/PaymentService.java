@@ -26,6 +26,9 @@ public final class PaymentService {
      */
     private final Map<String, Payment> strategiesByName;
 
+    /**
+     * Constructor for PaymentService.
+     */
     public PaymentService() {
         this.strategies = List.of(
                 new CreditCardPaymentStrategy("4111111111111111", "Demo User"),

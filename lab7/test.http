@@ -1,0 +1,68 @@
+### Get all flowers
+GET http://localhost:8080/api/v1/flower
+
+### Get flower by type
+GET http://localhost:8080/api/v1/flower/type/ROSE
+
+### Get flower by type - TULIP
+GET http://localhost:8080/api/v1/flower/type/TULIP
+
+### Create a new flower
+POST http://localhost:8080/api/v1/flower
+Content-Type: application/json
+
+{
+  "type": "ROSE",
+  "color": "RED",
+  "sepalLength": 2.5,
+  "price": 12.99
+}
+
+### Create another flower
+POST http://localhost:8080/api/v1/flower
+Content-Type: application/json
+
+{
+  "type": "TULIP",
+  "color": "YELLOW",
+  "sepalLength": 1.8,
+  "price": 8.50
+}
+
+### List delivery methods
+GET http://localhost:8080/api/v1/delivery
+
+### Simulate delivery - DHL
+GET http://localhost:8080/api/v1/delivery/simulate?method=dhl&itemType=ROSE
+
+### Simulate delivery - Post
+GET http://localhost:8080/api/v1/delivery/simulate?method=post&itemType=TULIP
+
+### List payment methods
+GET http://localhost:8080/api/v1/payment
+
+### Simulate payment - Credit Card
+GET http://localhost:8080/api/v1/payment/simulate?method=credit-card&amount=100
+
+### Simulate payment - PayPal
+GET http://localhost:8080/api/v1/payment/simulate?method=paypal&amount=50.75
+
+### Create an order
+POST http://localhost:8080/api/orders
+Content-Type: application/json
+
+{
+  "items": ["ROSE", "TULIP"],
+  "payment": "credit-card",
+  "delivery": "dhl"
+}
+
+### Create another order
+POST http://localhost:8080/api/orders
+Content-Type: application/json
+
+{
+  "items": ["ROMASHKA", "CACTUS"],
+  "payment": "paypal",
+  "delivery": "post"
+}

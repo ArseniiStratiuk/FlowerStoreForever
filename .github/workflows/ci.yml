@@ -21,5 +21,9 @@ jobs:
           distribution: temurin
           java-version: 17
           cache: maven
-      - name: Run tests
+      - name: Start Testcontainers Ryuk
+        run: echo "Testcontainers will use GitHub Actions Docker"
+      - name: Run tests with Testcontainers
         run: ./mvnw -B test
+        env:
+          TESTCONTAINERS_RYUK_DISABLED: false

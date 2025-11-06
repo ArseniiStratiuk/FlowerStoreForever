@@ -54,7 +54,8 @@ public final class FlowerController {
      * @return HTTP 200 with a flower or 404 if none exist
      */
     @GetMapping("/type/{type}")
-    public ResponseEntity<Flower> findByType(@PathVariable final FlowerType type) {
+    public ResponseEntity<Flower> findByType(
+            @PathVariable final FlowerType type) {
         return ResponseEntity.of(flowerService.findFirstByType(type));
     }
 
@@ -66,7 +67,8 @@ public final class FlowerController {
      */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Flower create(@Valid @RequestBody final CreateFlowerRequest request) {
+    public Flower create(
+            @Valid @RequestBody final CreateFlowerRequest request) {
         final Flower flower = new Flower(
                 request.type(),
                 request.color(),

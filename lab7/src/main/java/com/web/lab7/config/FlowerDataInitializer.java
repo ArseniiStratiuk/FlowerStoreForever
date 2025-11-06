@@ -6,18 +6,27 @@ import com.web.lab7.model.flower.FlowerType;
 import com.web.lab7.repository.FlowerRepository;
 import java.util.List;
 import org.springframework.boot.CommandLineRunner;
+
 import org.springframework.stereotype.Component;
 
 /**
- * Inserts a small set of flowers when the database is empty.
+ * Initializes the flower database with sample data on startup.
  */
 @Component
-public class FlowerDataInitializer implements CommandLineRunner {
+public final class FlowerDataInitializer implements CommandLineRunner {
 
+    /**
+     * Repository for flower data access.
+     */
     private final FlowerRepository flowerRepository;
 
-    public FlowerDataInitializer(final FlowerRepository flowerRepository) {
-        this.flowerRepository = flowerRepository;
+    /**
+     * Constructor for FlowerDataInitializer.
+     *
+     * @param repository the flower repository
+     */
+    public FlowerDataInitializer(final FlowerRepository repository) {
+        this.flowerRepository = repository;
     }
 
     @Override

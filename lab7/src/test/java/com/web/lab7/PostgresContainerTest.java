@@ -24,12 +24,16 @@ public abstract class PostgresContainerTest {
         .waitingFor(Wait.forListeningPort())
         .withStartupTimeout(Duration.ofSeconds(60));
 
-    static {
-        POSTGRES.start();
-    }
-
     @DynamicPropertySource
     static void configureDatasource(final DynamicPropertyRegistry registry) {
+        // Ensure the container is started as part of the DynamicPropertySource
+        // instead of during class initialization. Starting during static
+        // initialization can mask environment issues and cause a NoClassDefFound
+        // if the start throws an exception.
+        if (!POSTGRES.isRunning()) {
+            POSTGRES.start();
+        }
+
         registry.add("spring.datasource.url", POSTGRES::getJdbcUrl);
         registry.add("spring.datasource.username", POSTGRES::getUsername);
         registry.add("spring.datasource.password", POSTGRES::getPassword);

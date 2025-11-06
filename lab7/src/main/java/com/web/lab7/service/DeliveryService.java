@@ -26,6 +26,9 @@ public final class DeliveryService {
      */
     private final Map<String, Delivery> strategiesByName;
 
+    /**
+     * Constructor for DeliveryService.
+     */
     public DeliveryService() {
         this.strategies = List.of(
                 new PostDeliveryStrategy("Kyiv, Main Street 1"),

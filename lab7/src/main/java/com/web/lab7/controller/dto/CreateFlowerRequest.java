@@ -7,6 +7,11 @@ import jakarta.validation.constraints.PositiveOrZero;
 
 /**
  * Payload describing a flower to be persisted via the REST API.
+ *
+ * @param type the flower type
+ * @param color the flower color
+ * @param sepalLength the sepal length in cm
+ * @param price the flower price
  */
 public record CreateFlowerRequest(
         @NotNull(message = "type is required")

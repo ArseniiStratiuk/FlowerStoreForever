@@ -20,8 +20,13 @@ public class FlowerService {
      */
     private final FlowerRepository flowerRepository;
 
-    public FlowerService(final FlowerRepository flowerRepository) {
-        this.flowerRepository = flowerRepository;
+    /**
+     * Constructor for FlowerService.
+     *
+     * @param repository the flower repository
+     */
+    public FlowerService(final FlowerRepository repository) {
+        this.flowerRepository = repository;
     }
 
     /**
